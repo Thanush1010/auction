@@ -1,34 +1,177 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+/* Cricket Auction App Styles */
+
+.app-container {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+/* Navigation */
+.nav-link {
+  font-family: 'Barlow Condensed', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+.nav-link:hover {
+  color: var(--accent-primary);
 }
 
-.App-link {
-    color: #61dafb;
+.nav-link.active {
+  color: var(--accent-primary);
+  border-bottom: 2px solid var(--accent-primary);
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+/* Team Cards */
+.team-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.2s ease-in-out;
+}
+
+.team-card:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--accent-primary);
+}
+
+/* Player Card */
+.player-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.player-card.sold {
+  border-color: var(--accent-success);
+}
+
+.player-card.unsold {
+  border-color: var(--accent-danger);
+}
+
+/* Role Badges */
+.role-badge {
+  background-color: var(--bg-tertiary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  padding: 0.25rem 0.75rem;
+}
+
+.role-badge.batsman {
+  border-color: #FF9500;
+  color: #FF9500;
+}
+
+.role-badge.bowler {
+  border-color: #5856D6;
+  color: #5856D6;
+}
+
+.role-badge.all-rounder {
+  border-color: #34C759;
+  color: #34C759;
+}
+
+.role-badge.wicketkeeper {
+  border-color: #FF2D55;
+  color: #FF2D55;
+}
+
+/* Stats Display */
+.stat-value {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-secondary);
+}
+
+/* Table Styles */
+.auction-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.auction-table th {
+  font-family: 'Barlow Condensed', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background-color: var(--bg-tertiary);
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.auction-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.auction-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Form Inputs */
+.input-tactical {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.input-tactical:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
+/* Progress bar for purse */
+.purse-bar {
+  height: 4px;
+  background-color: var(--bg-tertiary);
+  overflow: hidden;
+}
+
+.purse-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease-in-out;
+}
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* Modal overlay */
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+/* Pulse animation for live indicator */
+.pulse-live {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
