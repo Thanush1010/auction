@@ -1,0 +1,87 @@
+{
+  "theme": "dark",
+  "archetype": "2 (The Performance Pro)",
+  "rationale": "Cricket auction is a high-energy, high-stakes sports event. Archetype 2 provides a command-center focus with high-visibility tactical aesthetics using deep obsidian, pure white, and volt/electric accents suitable for intense data tracking and live bidding.",
+  "colors": {
+    "background_primary": "#0A0A0A",
+    "background_secondary": "#141414",
+    "background_tertiary": "#1F1F1F",
+    "text_primary": "#FFFFFF",
+    "text_secondary": "#A3A3A3",
+    "accent_primary": "#007AFF",
+    "accent_hover": "#3395FF",
+    "accent_danger": "#FF3B30",
+    "accent_success": "#34C759",
+    "border_subtle": "rgba(255, 255, 255, 0.1)",
+    "border_focus": "#007AFF"
+  },
+  "typography": {
+    "heading_font": "Barlow Condensed, sans-serif",
+    "body_font": "DM Sans, sans-serif",
+    "mono_font": "JetBrains Mono, monospace",
+    "sizes": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl tracking-tighter uppercase font-black",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl tracking-tight uppercase font-bold",
+      "h3": "text-xl sm:text-2xl tracking-tight uppercase font-bold",
+      "body": "text-base tracking-normal font-normal",
+      "small": "text-sm",
+      "overline": "text-xs tracking-[0.2em] uppercase font-bold"
+    }
+  },
+  "layout_and_spacing": {
+    "dashboard_grid": "grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6",
+    "card_style": "cardless or flat background (bg-[#141414]), sharp edges (rounded-none or max rounded-sm), 1px solid stroke (border-white/10), no soft shadows",
+    "container_padding": "p-6 md:p-8 lg:p-12",
+    "navigation": "Sticky top nav with crystal glass effect (bg-black/80 backdrop-blur-xl border-b border-white/10) containing logo and primary navigation."
+  },
+  "components": {
+    "buttons": "Tactical style, solid colors for primary CTA (bg-[#007AFF] text-white), transparent with 1px border for secondary. Active/Hover states get lighter hue. MUST have data-testid. Font: Barlow Condensed uppercase.",
+    "inputs": "Shadcn custom. bg-[#0A0A0A] border-white/10 focus:border-[#007AFF] text-white. No soft shadows. Sharp corners.",
+    "tables": "Dense, cardless data tables. 1px bottom border per row (border-white/10). Hover effect on rows (bg-white/5).",
+    "modals": "Backdrop blur (backdrop-blur-xl). Dark tactical modal window (bg-[#141414] border border-white/10). No rounded corners.",
+    "team_cards": "Bento grid item. Dense layout. Display budget remaining with prominent Volt Blue or Success Green typography. Show slots filled vs total slots clearly.",
+    "player_card": "Highlight card during live bidding. Large photo placeholder, massive Barlow Condensed name, clear role badge (e.g., Batsman, Bowler, All-rounder, Wicketkeeper).",
+    "badges": "Sharp rectangular badges for roles. e.g., bg-[#1F1F1F] text-white border border-white/20 uppercase text-xs tracking-wider."
+  },
+  "motion_and_interaction": {
+    "hover": "Explicit hover states (e.g., hover:bg-white/10 hover:text-white). Focus states must have higher contrast and clear focus rings (focus:ring-2 focus:ring-[#007AFF]).",
+    "transitions": "transition-all duration-200 ease-in-out for micro-interactions.",
+    "bidding_animations": "When a player is sold, flash row/card with accent_success. When unsold, use accent_danger."
+  },
+  "image_urls": [
+    {
+      "category": "hero_background",
+      "url": "https://images.pexels.com/photos/36741130/pexels-photo-36741130.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=1080&w=1920",
+      "description": "Packed stadium during a thrilling night cricket match. Use for login/registration empty states with an overlay."
+    },
+    {
+      "category": "team_logo_placeholder_1",
+      "url": "https://images.unsplash.com/photo-1650054155227-b785bfaabcb9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHwyfHxzcG9ydHMlMjB0ZWFtJTIwbG9nbyUyMGFic3RyYWN0fGVufDB8fHx8MTc3NTY0Njk1N3ww&ixlib=rb-4.1.0&q=85",
+      "description": "Abstract sports team logo with neon red and blue shapes."
+    },
+    {
+      "category": "team_logo_placeholder_2",
+      "url": "https://images.unsplash.com/photo-1744129499372-0e4027ffa48b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHwxfHxzcG9ydHMlMjB0ZWFtJTIwbG9nbyUyMGFic3RyYWN0fGVufDB8fHx8MTc3NTY0Njk1N3ww&ixlib=rb-4.1.0&q=85",
+      "description": "Abstract colorful angular design for team logo."
+    },
+    {
+      "category": "player_placeholder",
+      "url": "https://images.unsplash.com/photo-1643294358128-0d2da3b4ea7a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNzl8MHwxfHNlYXJjaHw0fHxjcmlja2V0JTIwcGxheWVyJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzc1NjQ2OTQ0fDA&ixlib=rb-4.1.0&q=85",
+      "description": "Cricket player in white uniform playing a shot."
+    }
+  ],
+  "accessibility_and_testing": {
+    "contrast": "Ensure minimum 4.5:1 ratio for standard text against #0A0A0A and #141414. Do not use generic gray.",
+    "testing": "All interactive and key informational elements (buttons, inputs, clickable cards, budget displays) MUST include a kebab-case role-based data-testid attribute."
+  },
+  "instructions_to_main_agent": [
+    "Strictly adhere to the dark theme 'Performance Pro' archetype. No standard white dashboard styling.",
+    "Install and use @phosphor-icons/react for sharp, technical iconography.",
+    "Use Google Fonts: Barlow Condensed (Headings) and DM Sans (Body).",
+    "Setup routing: 1. Configuration (Setup teams, purse, slots) -> 2. Registration (Add team logos/names) -> 3. Player Entry -> 4. Live Auction / Dashboard.",
+    "For the Live Dashboard, implement a bento grid ('Control Room' mode). Track budget and slots dynamically, preventing transaction if team exceeds slots/credits.",
+    "Implement 'ExcelJS' for generating multi-sheet exports directly from the dashboard: Sheet 1 (Summary), Sheet 2 (Master List), Sheets 3+ (Individual teams).",
+    "Customize Shadcn components heavily to match the tactical dark theme (flat, border-white/10, sharp corners). DO NOT use default Shadcn rounded cards.",
+    "Ensure all interactive components have appropriate hover states and data-testid attributes for testing."
+  ]
+}
