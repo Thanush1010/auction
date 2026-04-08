@@ -14,6 +14,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -112,16 +113,23 @@ export default function PlayerAuction() {
   const handleOpenSellDialog = (player) => {
     setSelectedPlayer(player);
     setSellData({ team_id: "", sale_price: player.base_price.toString() });
+    setSellError("");
     setSellDialogOpen(true);
   };
 
   const handleSellPlayer = async () => {
+    setSellError("");
+    
     if (!sellData.team_id) {
-      toast.error("Please select a team");
+      setSellError("Please select a team");
       return;
     }
     if (!sellData.sale_price || parseFloat(sellData.sale_price) <= 0) {
-      toast.error("Sale price must be greater than 0");
+      setSellError("Sale price must be greater than 0");
+      return;
+    }
+    if (parseFloat(sellData.sale_price) < selectedPlayer.base_price) {
+      setSellError(`Sale price cannot be less than base price (${selectedPlayer.base_price} L)`);
       return;
     }
 
@@ -141,9 +149,12 @@ export default function PlayerAuction() {
       const teamsRes = await axios.get(`${API}/teams`);
       setTeams(teamsRes.data);
       setSellDialogOpen(false);
+      setSellError("");
       toast.success(`${selectedPlayer.name} sold successfully!`);
     } catch (error) {
-      toast.error(error.response?.data?.detail || "Failed to sell player");
+      const errorMsg = error.response?.data?.detail || "Failed to sell player";
+      setSellError(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setSaving(false);
     }
@@ -539,7 +550,10 @@ export default function PlayerAuction() {
       )}
 
       {/* Sell Dialog */}
-      <Dialog open={sellDialogOpen} onOpenChange={setSellDialogOpen}>
+      <Dialog open={sellDialogOpen} onOpenChange={(open) => {
+        setSellDialogOpen(open);
+        if (!open) setSellError("");
+      }}>
         <DialogContent className="bg-[#141414] border-white/10">
           <DialogHeader>
             <DialogTitle
@@ -548,6 +562,9 @@ export default function PlayerAuction() {
             >
               SELL PLAYER
             </DialogTitle>
+            <DialogDescription className="text-[#A3A3A3]">
+              Select a team and enter the final sale price
+            </DialogDescription>
           </DialogHeader>
           {selectedPlayer && (
             <div className="space-y-4 pt-4">
@@ -623,6 +640,15 @@ export default function PlayerAuction() {
                   Minimum: {selectedPlayer.base_price} L (Base Price)
                 </p>
               </div>
+
+              {sellError && (
+                <div
+                  data-testid="sell-error-message"
+                  className="p-3 bg-[#FF3B30]/10 border border-[#FF3B30]/50 text-[#FF3B30] text-sm"
+                >
+                  {sellError}
+                </div>
+              )}
 
               <Button
                 onClick={handleSellPlayer}

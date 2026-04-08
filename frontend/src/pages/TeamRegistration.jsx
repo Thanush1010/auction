@@ -9,6 +9,7 @@ import { Users, Plus, Trash2, ArrowRight, Edit2, Check, X, ImageIcon } from "luc
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -153,6 +154,9 @@ export default function TeamRegistration() {
                 <DialogTitle className="text-xl font-black text-white tracking-tight" style={{ fontFamily: 'Barlow Condensed' }}>
                   ADD NEW TEAM
                 </DialogTitle>
+                <DialogDescription className="text-[#A3A3A3]">
+                  Enter team name and optional logo URL
+                </DialogDescription>
               </DialogHeader>
               <div className="space-y-4 pt-4">
                 <div className="space-y-2">
