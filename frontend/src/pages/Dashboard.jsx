@@ -193,7 +193,7 @@ export default function Dashboard() {
               className="text-4xl font-black text-[#FF9500]"
               style={{ fontFamily: "Barlow Condensed" }}
             >
-              {stats.total_spent} CR
+              {stats.total_spent} PTS
             </p>
           </div>
 
@@ -319,7 +319,7 @@ export default function Dashboard() {
                         className="text-lg font-bold text-[#007AFF]"
                         style={{ fontFamily: "Barlow Condensed" }}
                       >
-                        {team.purse_remaining?.toFixed(1)} CR
+                        {team.purse_remaining} PTS
                       </span>
                     </div>
                     <div className="purse-bar">
@@ -354,7 +354,7 @@ export default function Dashboard() {
                         className="text-lg font-bold text-[#FF9500]"
                         style={{ fontFamily: "Barlow Condensed" }}
                       >
-                        {team.total_spent?.toFixed(1)} CR
+                        {team.total_spent} PTS
                       </p>
                       <p className="text-xs text-[#A3A3A3]">Spent</p>
                     </div>
@@ -431,7 +431,7 @@ export default function Dashboard() {
                               className="text-lg font-bold text-[#34C759]"
                               style={{ fontFamily: "Barlow Condensed" }}
                             >
-                              {player.sale_price} L
+                              {player.sale_price} PTS
                             </p>
                           </div>
                         </div>

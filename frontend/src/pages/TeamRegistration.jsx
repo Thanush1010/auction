@@ -306,7 +306,7 @@ export default function TeamRegistration() {
                   <div className="grid grid-cols-2 gap-3 mb-4">
                     <div className="bg-[#1F1F1F] p-3">
                       <p className="text-2xl font-black text-[#007AFF]" style={{ fontFamily: 'Barlow Condensed' }}>
-                        {team.purse_remaining?.toFixed(1)} CR
+                        {team.purse_remaining} PTS
                       </p>
                       <p className="text-xs text-[#A3A3A3] tracking-wider uppercase">Purse</p>
                     </div>

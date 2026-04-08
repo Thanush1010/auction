@@ -24,7 +24,7 @@ export default function Configuration() {
   const navigate = useNavigate();
   const [config, setConfig] = useState({
     num_teams: 8,
-    purse_amount: 100,
+    purse_amount: 20000,
     slots_per_team: 25,
   });
   const [isConfigured, setIsConfigured] = useState(false);
@@ -83,7 +83,7 @@ export default function Configuration() {
   const handleReset = async () => {
     try {
       await axios.delete(`${API}/config/reset`);
-      setConfig({ num_teams: 8, purse_amount: 100, slots_per_team: 25 });
+      setConfig({ num_teams: 8, purse_amount: 20000, slots_per_team: 25 });
       setIsConfigured(false);
       toast.success("Auction reset successfully!");
     } catch (error) {
@@ -141,7 +141,7 @@ export default function Configuration() {
           {/* Purse Amount */}
           <div className="space-y-2">
             <Label htmlFor="purse_amount" className="text-xs tracking-widest uppercase text-[#A3A3A3]">
-              Purse Amount (in Crores)
+              Purse Amount (in Points)
             </Label>
             <div className="relative">
               <Input
@@ -149,15 +149,15 @@ export default function Configuration() {
                 data-testid="input-purse-amount"
                 type="number"
                 min={1}
-                step={0.1}
+                step={100}
                 value={config.purse_amount}
-                onChange={(e) => setConfig({ ...config, purse_amount: parseFloat(e.target.value) || 1 })}
+                onChange={(e) => setConfig({ ...config, purse_amount: parseInt(e.target.value) || 1 })}
                 className="bg-[#0A0A0A] border-white/10 text-white text-2xl font-bold h-14 pr-16 focus:border-[#007AFF]"
                 style={{ fontFamily: 'Barlow Condensed' }}
               />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A3A3A3] font-bold">CR</span>
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A3A3A3] font-bold">PTS</span>
             </div>
-            <p className="text-xs text-[#A3A3A3]">Budget allocated to each team</p>
+            <p className="text-xs text-[#A3A3A3]">Budget allocated to each team (e.g., 20000 points)</p>
           </div>
 
           {/* Slots per Team */}
@@ -189,7 +189,7 @@ export default function Configuration() {
               <p className="text-xs text-[#A3A3A3]">Teams</p>
             </div>
             <div>
-              <p className="text-3xl font-black text-[#007AFF]" style={{ fontFamily: 'Barlow Condensed' }}>{config.purse_amount} CR</p>
+              <p className="text-3xl font-black text-[#007AFF]" style={{ fontFamily: 'Barlow Condensed' }}>{config.purse_amount} PTS</p>
               <p className="text-xs text-[#A3A3A3]">Per Team</p>
             </div>
             <div>

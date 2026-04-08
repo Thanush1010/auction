@@ -59,6 +59,7 @@ export default function PlayerAuction() {
     sale_price: "",
   });
   const [saving, setSaving] = useState(false);
+  const [sellError, setSellError] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -129,7 +130,7 @@ export default function PlayerAuction() {
       return;
     }
     if (parseFloat(sellData.sale_price) < selectedPlayer.base_price) {
-      setSellError(`Sale price cannot be less than base price (${selectedPlayer.base_price} L)`);
+      setSellError(`Sale price cannot be less than base price (${selectedPlayer.base_price} PTS)`);
       return;
     }
 
@@ -302,12 +303,12 @@ export default function PlayerAuction() {
               </div>
               <div className="space-y-2">
                 <Label className="text-xs tracking-widest uppercase text-[#A3A3A3]">
-                  Base Price (in Lakhs)
+                  Base Price (in Points)
                 </Label>
                 <Input
                   data-testid="input-base-price"
                   type="number"
-                  placeholder="e.g., 50"
+                  placeholder="e.g., 500"
                   value={newPlayer.base_price}
                   onChange={(e) =>
                     setNewPlayer({ ...newPlayer, base_price: e.target.value })
@@ -460,7 +461,7 @@ export default function PlayerAuction() {
                     </span>
                   </td>
                   <td>
-                    <span className="text-[#A3A3A3]">{player.base_price} L</span>
+                    <span className="text-[#A3A3A3]">{player.base_price} PTS</span>
                   </td>
                   <td>
                     <span
@@ -480,7 +481,7 @@ export default function PlayerAuction() {
                         className="font-bold text-[#34C759]"
                         style={{ fontFamily: "Barlow Condensed" }}
                       >
-                        {player.sale_price} L
+                        {player.sale_price} PTS
                       </span>
                     ) : (
                       <span className="text-[#A3A3A3]">-</span>
@@ -576,11 +577,13 @@ export default function PlayerAuction() {
                   {selectedPlayer.name}
                 </h3>
                 <div className="flex items-center gap-3">
-                  <span className={`role-badge ${roleColors[selectedPlayer.role]}`}>
+                  <span
+                    className={`role-badge ${roleColors[selectedPlayer.role]}`}
+                  >
                     {selectedPlayer.role}
                   </span>
                   <span className="text-[#A3A3A3]">
-                    Base: {selectedPlayer.base_price} L
+                    Base: {selectedPlayer.base_price} PTS
                   </span>
                 </div>
               </div>
@@ -612,7 +615,7 @@ export default function PlayerAuction() {
                         <div className="flex items-center justify-between w-full">
                           <span>{team.name}</span>
                           <span className="text-xs text-[#A3A3A3] ml-2">
-                            {team.purse_remaining?.toFixed(1)} Cr •{" "}
+                            {team.purse_remaining} pts •{" "}
                             {team.slots_filled}/{team.total_slots} slots
                           </span>
                         </div>
@@ -624,7 +627,7 @@ export default function PlayerAuction() {
 
               <div className="space-y-2">
                 <Label className="text-xs tracking-widest uppercase text-[#A3A3A3]">
-                  Sale Price (in Lakhs)
+                  Sale Price (in Points)
                 </Label>
                 <Input
                   data-testid="input-sale-price"
@@ -637,7 +640,7 @@ export default function PlayerAuction() {
                   style={{ fontFamily: "Barlow Condensed" }}
                 />
                 <p className="text-xs text-[#A3A3A3]">
-                  Minimum: {selectedPlayer.base_price} L (Base Price)
+                  Minimum: {selectedPlayer.base_price} PTS (Base Price)
                 </p>
               </div>
 

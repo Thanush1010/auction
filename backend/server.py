@@ -36,7 +36,7 @@ class AuctionConfig(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     num_teams: int = Field(default=8, ge=2, le=20)
-    purse_amount: float = Field(default=100.0, gt=0)  # In Crores
+    purse_amount: int = Field(default=20000, gt=0)  # In Points
     slots_per_team: int = Field(default=25, ge=1, le=50)
     is_configured: bool = Field(default=False)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
@@ -44,7 +44,7 @@ class AuctionConfig(BaseModel):
 
 class AuctionConfigCreate(BaseModel):
     num_teams: int = Field(ge=2, le=20)
-    purse_amount: float = Field(gt=0)
+    purse_amount: int = Field(gt=0)  # In Points
     slots_per_team: int = Field(ge=1, le=50)
 
 
@@ -53,10 +53,10 @@ class Team(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
     logo_url: Optional[str] = None
-    purse_remaining: float
+    purse_remaining: int  # In Points
     slots_filled: int = Field(default=0)
     total_slots: int
-    total_spent: float = Field(default=0.0)
+    total_spent: int = Field(default=0)  # In Points
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
@@ -75,18 +75,18 @@ class Player(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
     role: str  # Batsman, Bowler, All-rounder, Wicketkeeper
-    base_price: float  # In Lakhs
+    base_price: int  # In Points
     status: str = Field(default="pending")  # pending, sold, unsold
     team_id: Optional[str] = None
     team_name: Optional[str] = None
-    sale_price: Optional[float] = None  # In Lakhs
+    sale_price: Optional[int] = None  # In Points
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class PlayerCreate(BaseModel):
     name: str
     role: str
-    base_price: float
+    base_price: int  # In Points
 
 
 class PlayerSell(BaseModel):
@@ -331,14 +331,11 @@ async def sell_player(player_id: str, sell_data: PlayerSell):
     if sell_data.sale_price < player['base_price']:
         raise HTTPException(status_code=400, detail="Sale price cannot be less than base price")
     
-    # Convert sale price from Lakhs to Crores for comparison
-    sale_price_crores = sell_data.sale_price / 100
-    
-    # Check purse
-    if sale_price_crores > team['purse_remaining']:
+    # Check purse (all values in Points now)
+    if sell_data.sale_price > team['purse_remaining']:
         raise HTTPException(
             status_code=400, 
-            detail=f"Insufficient purse. Team has {team['purse_remaining']:.2f} Cr remaining, but sale price is {sale_price_crores:.2f} Cr"
+            detail=f"Insufficient purse. Team has {team['purse_remaining']} points remaining, but sale price is {sell_data.sale_price} points"
         )
     
     # Check slots
@@ -359,14 +356,14 @@ async def sell_player(player_id: str, sell_data: PlayerSell):
         }}
     )
     
-    # Update team
+    # Update team (all values in Points)
     await db.teams.update_one(
         {"id": sell_data.team_id},
         {
             "$inc": {
-                "purse_remaining": -sale_price_crores,
+                "purse_remaining": -sell_data.sale_price,
                 "slots_filled": 1,
-                "total_spent": sale_price_crores
+                "total_spent": sell_data.sale_price
             }
         }
     )
@@ -400,16 +397,15 @@ async def reset_player(player_id: str):
     if not player:
         raise HTTPException(status_code=404, detail="Player not found")
     
-    # If player was sold, restore team's purse and slot
+    # If player was sold, restore team's purse and slot (all values in Points)
     if player['status'] == 'sold' and player.get('team_id'):
-        sale_price_crores = player['sale_price'] / 100
         await db.teams.update_one(
             {"id": player['team_id']},
             {
                 "$inc": {
-                    "purse_remaining": sale_price_crores,
+                    "purse_remaining": player['sale_price'],
                     "slots_filled": -1,
-                    "total_spent": -sale_price_crores
+                    "total_spent": -player['sale_price']
                 }
             }
         )
@@ -453,7 +449,7 @@ async def export_excel():
     ws_summary = wb.active
     ws_summary.title = "Summary"
     
-    summary_headers = ["Team Name", "Total Spent (Cr)", "Remaining Budget (Cr)", "Slots Filled", "Total Slots"]
+    summary_headers = ["Team Name", "Total Spent (Pts)", "Remaining Budget (Pts)", "Slots Filled", "Total Slots"]
     for col, header in enumerate(summary_headers, 1):
         cell = ws_summary.cell(row=1, column=col, value=header)
         cell.font = header_font
@@ -463,8 +459,8 @@ async def export_excel():
     
     for row, team in enumerate(teams, 2):
         ws_summary.cell(row=row, column=1, value=team['name']).border = border
-        ws_summary.cell(row=row, column=2, value=round(team.get('total_spent', 0), 2)).border = border
-        ws_summary.cell(row=row, column=3, value=round(team.get('purse_remaining', 0), 2)).border = border
+        ws_summary.cell(row=row, column=2, value=team.get('total_spent', 0)).border = border
+        ws_summary.cell(row=row, column=3, value=team.get('purse_remaining', 0)).border = border
         ws_summary.cell(row=row, column=4, value=team.get('slots_filled', 0)).border = border
         ws_summary.cell(row=row, column=5, value=team.get('total_slots', 0)).border = border
     
@@ -475,7 +471,7 @@ async def export_excel():
     # Sheet 2: Master List
     ws_master = wb.create_sheet("All Players Sold")
     
-    master_headers = ["Player Name", "Role", "Base Price (L)", "Sale Price (L)", "Team"]
+    master_headers = ["Player Name", "Role", "Base Price (Pts)", "Sale Price (Pts)", "Team"]
     for col, header in enumerate(master_headers, 1):
         cell = ws_master.cell(row=1, column=col, value=header)
         cell.font = header_font
@@ -501,7 +497,7 @@ async def export_excel():
         sheet_name = team['name'][:31].replace('/', '-').replace('\\', '-').replace('*', '-')
         ws_team = wb.create_sheet(sheet_name)
         
-        team_headers = ["Player Name", "Role", "Base Price (L)", "Sale Price (L)"]
+        team_headers = ["Player Name", "Role", "Base Price (Pts)", "Sale Price (Pts)"]
         for col, header in enumerate(team_headers, 1):
             cell = ws_team.cell(row=1, column=col, value=header)
             cell.font = header_font
