@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
@@ -28,11 +28,7 @@ export default function TeamRegistration() {
   const [editingTeam, setEditingTeam] = useState(null);
   const [editData, setEditData] = useState({ name: "", logo_url: "" });
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const [configRes, teamsRes] = await Promise.all([
         axios.get(`${API}/config`),
@@ -50,7 +46,11 @@ export default function TeamRegistration() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [navigate]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleAddTeam = async () => {
     if (!newTeam.name.trim()) {
